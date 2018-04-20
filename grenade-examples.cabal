@@ -1,0 +1,69 @@
+name: grenade-examples
+version: 0.0.0.0
+cabal-version: >=1.10
+build-type: Simple
+license: BSD2
+license-file: LICENSE
+maintainer: nick.van.den.broeck666@gmail.com
+synopsis: Examples for the use of the grenade library
+description:
+    Examples for the use of the grenade library
+category: AI
+author: Nick Van den Broeck
+
+library
+    exposed-modules:
+        Grenade.Examples
+        Grenade.Examples.MNIST.DataSet
+        Grenade.Examples.MNIST.Load
+        Grenade.Examples.MNIST.Parser
+        Grenade.Examples.MNIST.Parser.Internal
+        Grenade.Examples.NN.Network
+        Grenade.Examples.NN.Param
+        Grenade.Examples.CNN.Network
+        Grenade.Examples.CNN.Param
+    build-depends:
+        base >=4.10 && <4.11,
+        grenade >=0.1.0,
+        exceptions -any,
+        path -any,
+        path-io -any,
+        bytestring -any,
+        megaparsec -any,
+        vector -any,
+        MonadRandom -any
+    default-language: Haskell2010
+    default-extensions: NoImplicitPrelude
+    hs-source-dirs: src/
+    other-modules:
+        Import
+        Utils.Parser
+        Utils.Zip
+        Utils.Files
+    ghc-options: -Wall -fwarn-unused-imports -fwarn-incomplete-patterns -fno-warn-unused-do-bind -fno-warn-name-shadowing
+
+executable grenade-examples
+    main-is: Main.hs
+    build-depends:
+        base >=4.10 && <4.11,
+        grenade-examples -any
+    default-language: Haskell2010
+    hs-source-dirs: app/
+    ghc-options: -Wall -fwarn-unused-imports -fwarn-incomplete-patterns -fno-warn-unused-do-bind -fno-warn-name-shadowing
+
+test-suite test-grenade-examples
+    type: exitcode-stdio-1.0
+    main-is: Main.hs
+    build-depends:
+        base -any,
+        hspec -any,
+        megaparsec -any,
+        grenade-examples -any,
+        bytestring -any
+    default-language: Haskell2010
+    default-extensions: NoImplicitPrelude
+    hs-source-dirs: test/
+    other-modules:
+        Grenade.NetSpec
+        TestImport
+    ghc-options: -threaded -rtsopts -with-rtsopts=-N -Wall
