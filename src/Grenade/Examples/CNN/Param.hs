@@ -2,9 +2,11 @@ module Grenade.Examples.CNN.Param
     ( param
     ) where
 
-import Grenade (LearningParameters(..))
+import Import
+
+import Grenade
 
 param :: LearningParameters
-param =
-    LearningParameters
-    {learningRate = 0.0005, learningMomentum = 0, learningRegulariser = 0.00000}
+param = case createLearningParameters 0.0005 0 0000 of
+    Left err -> error err
+    Right params -> params
