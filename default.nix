@@ -18,8 +18,8 @@ let
           src = pkgs.fetchFromGitHub {
             owner = "Nickske666";
             repo = "grenade";
-            rev = "7979817a6085ffa9f82c12a3ec8db2a88f263d7f";
-            sha256 = "1amcwpqbd6qik243yfa1bnd6dd4wymiivqpgp5pbgbx4ji4knvp6";
+            rev = "b18c2596c39e132ab85a05ea6f1d29b8c8375ab8";
+            sha256 = "01qdvaswng4vb7la6ylm4xr04zyk9mgcql2wr8h5lj04q4lcn9ln";
           };
           drv = super.haskellSrc2nix {
             name = "grenade";
