@@ -5,8 +5,10 @@ module Main
 import Grenade.Examples (run)
 import qualified Grenade.Examples.MNIST.Load as MNIST
 import Grenade.Examples.NN.Network
-import Grenade.Train.OptimiseHyper (findHyperParamsWithSeveralRuns)
+import Grenade.Train.HyperParamInfo
+import Grenade.Train.OptimiseHyper.Internal
 
+--import Grenade.Train.OptimiseHyper (findHyperParamsWithSeveralRuns)
 import Data.Validity
 
 import System.Exit
@@ -39,7 +41,9 @@ main = do
     printValidation optInfo
     printValidation params
     putStrLn "Starting the optimisation"
-    optimisedParams <-
-        findHyperParamsWithSeveralRuns epochs net trainSet valSet optInfo params
-    undefined
-    run epochs optimisedParams randomNetworkM load
+--    let trainInfo = getTrainInfo (head optInfo) trainSet valSet
+    let info = getHyperParamInfo epochs net trainSet valSet params
+    print info
+    -- optimisedParams <- findHyperParams epochs net trainInfo Rate params
+        --findHyperParamsWithSeveralRuns epochs net trainSet valSet optInfo params
+    -- run epochs optimisedParams randomNetworkM load
