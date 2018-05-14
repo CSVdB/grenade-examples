@@ -14,8 +14,11 @@ import Text.Megaparsec.Byte
 
 type Pixel = Double
 
+maxPixel :: Double
+maxPixel = 256
+
 pixelParser :: Parser Pixel
-pixelParser = fromIntegral <$> anyChar
+pixelParser = (/ maxPixel) . fromIntegral <$> anyChar
 
 imageParser :: Parser (S Image)
 imageParser = do

@@ -10,6 +10,8 @@ import Utils.Files
 import Utils.Parser
 import Utils.Zip
 
+import Data.Validity
+
 data DataSetException
     = NotEnoughDataPoints String
     | MissingDataSet String
@@ -72,4 +74,6 @@ loadDataSet (imageBL, labelBL) = do
     images <- runParserPretty imageFileParser imageBL
     labels <- runParserPretty labelFileParser labelBL
     dataSet <- images >< labels
-    pure $ fmap (\(a, b) -> (a / 256, b / 256)) dataSet
+    case prettyValidation dataSet of
+        Left errMess -> error errMess
+        Right dataSet -> pure dataSet

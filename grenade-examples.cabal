@@ -23,15 +23,16 @@ library
         Grenade.Examples.CNN.Network
         Grenade.Examples.CNN.Param
     build-depends:
-        base >=4.10 && <4.11,
-        grenade >=0.1.0,
-        exceptions -any,
-        path -any,
-        path-io -any,
-        bytestring -any,
-        megaparsec -any,
-        vector -any,
-        MonadRandom -any
+        base >=4.10 && <4.11
+      , bytestring -any
+      , exceptions -any
+      , grenade >=0.1.0
+      , megaparsec -any
+      , MonadRandom -any
+      , path -any
+      , path-io -any
+      , validity -any
+      , vector -any
     default-language: Haskell2010
     default-extensions: NoImplicitPrelude
     hs-source-dirs: src/
@@ -45,9 +46,10 @@ library
 executable grenade-examples
     main-is: Main.hs
     build-depends:
-        base >=4.10 && <4.11
+        base >= 4.10 && < 4.11
       , grenade-examples -any
       , grenade >= 0.3
+      , validity -any
     default-language: Haskell2010
     hs-source-dirs: app/
     ghc-options: -Wall -fwarn-unused-imports -fwarn-incomplete-patterns -fno-warn-unused-do-bind -fno-warn-name-shadowing

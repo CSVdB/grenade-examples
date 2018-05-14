@@ -17,4 +17,4 @@ spec =
     describe "pixelParser" $
     it "unit test" $
     let pixel = MP.runParser pixelParser "" $ BS.pack [5]
-    in pixel `shouldBe` Right 5
+     in pixel `shouldBe` Right (5 / 256)
