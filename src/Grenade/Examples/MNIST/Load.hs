@@ -10,6 +10,7 @@ import Utils.Files
 import Utils.Parser
 import Utils.Zip
 
+import qualified Data.List.NonEmpty as NEL
 import Data.Validity
 
 data DataSetException
@@ -40,12 +41,13 @@ load nOfTrain nOfVal nOfTest = do
     (_, files) <- liftIO $ listDir dir
     fullTrainDataSet <- getDataSet files "train"
     fullTestDataSet <- getDataSet files "test"
-    let (trainSet, valSet) = take nOfVal <$> splitAt nOfTrain fullTrainDataSet
-        testSet = take nOfTest fullTestDataSet
+    let (trainSet, valSet) =
+            take nOfVal <$> splitAt nOfTrain (NEL.toList fullTrainDataSet)
+        testSet = take nOfTest $ NEL.toList fullTestDataSet
     when (length trainSet /= nOfTrain) $ notEnoughData "training"
     when (length valSet /= nOfVal) $ notEnoughData "validating"
     when (length testSet /= nOfTest) $ notEnoughData "testing"
-    pure (trainSet, valSet, testSet)
+    pure (NEL.fromList trainSet, NEL.fromList valSet, NEL.fromList testSet)
 
 getDataSet ::
        (MonadIO m, MonadThrow m) => [Path Abs File] -> String -> m MNISTData
@@ -74,6 +76,6 @@ loadDataSet (imageBL, labelBL) = do
     images <- runParserPretty imageFileParser imageBL
     labels <- runParserPretty labelFileParser labelBL
     dataSet <- images >< labels
-    case prettyValidation dataSet of
+    case prettyValidation $ NEL.fromList dataSet of
         Left errMess -> error errMess
         Right dataSet -> pure dataSet
