@@ -2,12 +2,12 @@ module Main
     ( main
     ) where
 
-import Grenade.Examples (run)
+--import Grenade.Examples (run)
 import qualified Grenade.Examples.MNIST.Load as MNIST
 import Grenade.Examples.NN.Network
 import Grenade.Train.HyperParamInfo
-import Grenade.Train.OptimiseHyper.Internal
 
+--import Grenade.Train.OptimiseHyper.Internal
 --import Grenade.Train.OptimiseHyper (findHyperParamsWithSeveralRuns)
 import Data.Validity
 

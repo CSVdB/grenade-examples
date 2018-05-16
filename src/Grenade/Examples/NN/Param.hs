@@ -10,8 +10,6 @@ import Grenade.Train.OptimiseHyper
 
 import Numeric.Natural
 
-import Control.Monad.Catch
-
 type Image = 'D2 28 28
 
 type Label = 'D1 10
