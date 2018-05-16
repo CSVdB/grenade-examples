@@ -4,6 +4,7 @@
 module Grenade.Examples.MNIST.DataSet
     ( MNISTData
     , MNISTDataPoint
+    , MNISTDataSets
     , Image
     , Label
     , nOfOutputs
@@ -14,6 +15,7 @@ module Grenade.Examples.MNIST.DataSet
 import Import
 
 import Grenade
+import Grenade.Run
 
 type NOfOutputs = 10
 
@@ -35,3 +37,8 @@ type Image = 'D2 NOfRows NOfCols
 type Label = 'D1 NOfOutputs
 
 type MNISTData = DataSet Image Label
+
+type MNISTDataSets = DataSets Image Label
+
+sth :: MNISTDataSets
+sth = DataSets undefined undefined undefined

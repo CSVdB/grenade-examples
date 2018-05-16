@@ -6,6 +6,7 @@ import Import
 
 import Grenade.Examples.MNIST.DataSet
 import Grenade.Examples.MNIST.Parser
+import Grenade.Run
 import Utils.Files
 import Utils.Parser
 import Utils.Zip
@@ -27,12 +28,7 @@ dataDir = resolveDir' "data/"
 notEnoughData :: MonadThrow m => String -> m a
 notEnoughData = throwM . NotEnoughDataPoints
 
-load ::
-       (MonadIO m, MonadThrow m)
-    => Int
-    -> Int
-    -> Int
-    -> m (MNISTData, MNISTData, MNISTData)
+load :: (MonadIO m, MonadThrow m) => Int -> Int -> Int -> m MNISTDataSets
 load nOfTrain nOfVal nOfTest = do
     dir <- dataDir
     (_, files) <- liftIO $ listDir dir
@@ -43,7 +39,7 @@ load nOfTrain nOfVal nOfTest = do
     when (length trainSet /= nOfTrain) $ notEnoughData "training"
     when (length valSet /= nOfVal) $ notEnoughData "validating"
     when (length testSet /= nOfTest) $ notEnoughData "testing"
-    pure (trainSet, valSet, testSet)
+    pure $ DataSets trainSet valSet testSet
 
 getDataSet ::
        (MonadIO m, MonadThrow m) => [Path Abs File] -> String -> m MNISTData
