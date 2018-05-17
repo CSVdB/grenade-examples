@@ -32,24 +32,27 @@ load :: (MonadIO m, MonadThrow m) => Int -> Int -> Int -> m MNISTDataSets
 load nOfTrain nOfVal nOfTest = do
     dir <- dataDir
     (_, files) <- liftIO $ listDir dir
-    fullTrainDataSet <- getDataSet files "train"
-    fullTestDataSet <- getDataSet files "test"
-    let (trainSet, valSet) = take nOfVal <$> splitAt nOfTrain fullTrainDataSet
-        testSet = take nOfTest fullTestDataSet
+    fullTrainDataSet <- getDataSet (nOfTrain + nOfVal) files "train"
+    testSet <- getDataSet nOfTest files "test"
+    let (trainSet, valSet) = splitAt nOfTrain fullTrainDataSet
     when (length trainSet /= nOfTrain) $ notEnoughData "training"
     when (length valSet /= nOfVal) $ notEnoughData "validating"
     when (length testSet /= nOfTest) $ notEnoughData "testing"
     pure $ DataSets trainSet valSet testSet
 
 getDataSet ::
-       (MonadIO m, MonadThrow m) => [Path Abs File] -> String -> m MNISTData
-getDataSet files name =
+       (MonadIO m, MonadThrow m)
+    => Int
+    -> [Path Abs File]
+    -> String
+    -> m MNISTData
+getDataSet size files name =
     case getFilesFromList files name of
         Nothing -> throwM $ MissingDataSet name
         Just (trainImageFile, trainLabelFile) -> do
             imagesAsBL <- readFilePretty trainImageFile
             labelsAsBL <- readFilePretty trainLabelFile
-            loadDataSet (imagesAsBL, labelsAsBL)
+            loadDataSet size (imagesAsBL, labelsAsBL)
 
 getFilesFromList ::
        [Path Abs File] -> String -> Maybe (Path Abs File, Path Abs File)
@@ -63,9 +66,9 @@ getFilesFromList paths name = do
 toRelFilePath :: Path Abs File -> FilePath
 toRelFilePath = toFilePath . filename
 
-loadDataSet :: MonadThrow m => (ByteString, ByteString) -> m MNISTData
-loadDataSet (imageBL, labelBL) = do
-    images <- runParserPretty imageFileParser imageBL
-    labels <- runParserPretty labelFileParser labelBL
+loadDataSet :: MonadThrow m => Int -> (ByteString, ByteString) -> m MNISTData
+loadDataSet size (imageBL, labelBL) = do
+    images <- runParserPretty (imageFileParser size) imageBL
+    labels <- runParserPretty (labelFileParser size) labelBL
     dataSet <- images >< labels
     pure $ fmap (\(a, b) -> (a / 256, b / 256)) dataSet

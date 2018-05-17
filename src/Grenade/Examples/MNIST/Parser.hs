@@ -11,8 +11,8 @@ import Grenade.Examples.MNIST.DataSet
 import Grenade.Examples.MNIST.Parser.Internal
 import Utils.Parser
 
-imageFileParser :: Parser [S Image]
-imageFileParser = do
+imageFileParser :: Int -> Parser [S Image]
+imageFileParser maxSize = do
     void word32Parser
     size <- fromIntegral <$> word32Parser
     nRows <- word32Parser
@@ -21,10 +21,10 @@ imageFileParser = do
     nCols <- word32Parser
     when (nCols /= fromIntegral nOfCols) $
         fail "The number of rows isn't correct"
-    replicateM size imageParser
+    replicateM (min size maxSize) imageParser
 
-labelFileParser :: Parser [S Label]
-labelFileParser = do
+labelFileParser :: Int -> Parser [S Label]
+labelFileParser maxSize = do
     void word32Parser
     size <- fromIntegral <$> word32Parser
-    replicateM size labelParser
+    replicateM (min size maxSize) labelParser
