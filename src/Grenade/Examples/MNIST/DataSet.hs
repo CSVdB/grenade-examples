@@ -39,6 +39,3 @@ type Label = 'D1 NOfOutputs
 type MNISTData = DataSet Image Label
 
 type MNISTDataSets = DataSets Image Label
-
-sth :: MNISTDataSets
-sth = DataSets undefined undefined undefined
