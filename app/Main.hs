@@ -37,12 +37,12 @@ randomNetworkM :: IO Net
 randomNetworkM = randomNetwork
 
 type Net
-     = Network '[ FullyConnected 2 2, Tanh, FullyConnected 2 1, Tanh] '[ 'D1 2, 'D1 2, 'D1 2, 'D1 1, 'D1 1]
+     = Network '[ FullyConnected 2 2, Logit, FullyConnected 2 1, Logit] '[ 'D1 2, 'D1 2, 'D1 2, 'D1 1, 'D1 1]
 
 main :: IO ()
 main = do
     let samples = take 100000 $ cycle $ zip inputs outputs
-        params = LearningParameters 3e-5 0 0
+        params = LearningParameters 5e-4 0 0
     net <- randomNetworkM
     putStrLn "Before training:"
     print $ snd $ runNetwork net $ S1D $ vec2 0 0
